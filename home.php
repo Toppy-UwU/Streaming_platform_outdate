@@ -78,7 +78,7 @@ mysqli_close($conn);
                     <div class="row-cols-1 " style=" align-items: center;">
                         <nav class="nav">
                             <?php
-                            if ($_SESSION['loggin']) {
+                            if ($_SESSION['logged_in']) {
                             ?>
                                 <a href="home.php" style="margin-top: 20px;">
                                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Home</button>

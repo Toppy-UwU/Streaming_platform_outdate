@@ -1,41 +1,95 @@
 <?php
-    session_start();
-    $V_name = $_GET['Vid'];
+session_start();
+include 'conn.php';
+$V_name = $_GET['Vid'];
+$sql = "SELECT * FROM videos WHERE V_encode = '$V_name'";
+$result = mysqli_query($conn, $sql);
+$data = $result->fetch_assoc();
+mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video</title>
-</head>
-<body>
-    <h1> <?php echo ''. $V_name ?> </h1>
 
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<video id="video"></video>
-<script>
-  var video = document.getElementById('video');
-  if(Hls.isSupported()) {
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video</title>
+
+  <style>
+      #video {
+        width: 100%;
+        max-width: 1280px;
+      }
+
+      .test-bg {
+
+        background-color: red;
+      }
+
+      .quality-select {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+        font-size: 16px;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+
+</head>
+
+<body>
+  
+
+  <div class="video-container test-bg">
+      <video id="video" controls></video>
+      <select id="quality-select" class="quality-select">
+        <option value="auto" selected>Auto</option>
+        <option value="240">240p</option>
+        <option value="360">360p</option>
+        <option value="480">480p</option>
+        <option value="720">720p</option>
+        <option value="1080">1080p</option>
+      </select>
+  </div>
+  <h1> <?php echo '' . $data['V_title'] ?> </h1>
+  <script src="//cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  
+  <script>
+    if (Hls.isSupported()) {
+      console.log('hls.js work!!!');
+    }
+    var video = document.getElementById('video');
+    var qualitySelect = document.getElementById('quality-select');
     var hls = new Hls();
-    hls.loadSource('http://localhost/python/HLS_file/<?php echo ''. $V_name ?>.m3u8');
+    var url = 'http://localhost/python/HLS_file/<?php echo '' . $V_name ?>.m3u8';
+
+    hls.loadSource(url);
     hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED,function() {
-      video.play();
-  });
- }
- // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
- // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
- // This is using the built-in support of the plain video element, without using hls.js.
-  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = 'http://localhost/python/HLS_file/<?php echo ''. $V_name ?>.m3u8';
-    video.addEventListener('canplay',function() {
-      video.play();
+    qualitySelect.addEventListener('change', function() {
+      var quality = qualitySelect.value;
+      hls.levels.forEach(function(level, levelIndex) {
+        if (level.height === quality || quality === 'auto') {
+          hls.currentLevel = levelIndex;
+        }
+      });
     });
-  }
-</script>
-    
+
+    var time = localStorage.getItem('video-time');
+    if (time) {
+      video.currentTime = time;
+    }
+    video.addEventListener('timeupdate', function() {
+      localStorage.setItem('video-time', video.currentTime);
+    });
+  </script>
+
 
 </body>
+
 </html>
