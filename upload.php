@@ -9,9 +9,15 @@
     $fileInfo = $getID3->analyze($file);
 
     $U_ID = $_SESSION['U_ID'];
+    $title = $_POST['V_title'];
+    if($title != ' ' || $title != '') {
+        $name = $title;
+    }else {
+        $name = $_FILES['video']['name'];
+    }
 
-    $name = $_FILES['video']['name'];
     $size = $_FILES['video']['size'];
+
 
     $duration = $fileInfo['playtime_string']; //second
     // $min = $duration / 60; // minute
@@ -32,6 +38,7 @@
     $sql = "INSERT INTO videos (V_title, V_view, V_length, V_size, U_ID, V_permit, V_encode)
     VALUES ('$name', 0, '$duration', '$size', '$U_ID', 'public', '$encode_name')";
 
+    $update_user_video = "UPDATE users SET U_vid = U_vid + 1 WHERE U_ID = $U_ID";
     // echo "" . $file_name;
     // echo "" . $_POST['V_name'];
     // echo "" . $_POST['V_decs'];
@@ -44,6 +51,7 @@
         // echo $file_new_name . "<br>";
         // echo "The video file ". basename( $_FILES["video"]["name"]). " has been uploaded.";
         if(mysqli_query($conn, $sql)) {
+            mysqli_query($conn, $update_user_video);
             header("Location: home.php");
             exit;
         }else {

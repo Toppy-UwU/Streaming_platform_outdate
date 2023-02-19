@@ -82,12 +82,18 @@ mysqli_close($conn);
                             <a href="video.html" style="margin-top: 20px;">
                                 <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Private</button>
                             </a>
-                            <div style="margin-top: 20px;">
-                                <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#uploadVid" style="width: 230px; color: black;">Upload Video</button>
-                            </div>
+                            <?php
+                                    if($_SESSION['upload_permit'] == '1' ) {
+                                ?>
+                                    <div style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#uploadVid" style="width: 230px; color: black;">Upload Video</button>
+                                    </div>
+                                <?php
+                                    }
+                                ?>
 
                             <?php
-                            if($data['U_type'] == 'admin') {
+                            if($_SESSION['type'] == 'admin') {
                                 ?>
                                 <a href="index.html" style="margin-top: 20px;">
                                 <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Administration</button>
@@ -103,7 +109,7 @@ mysqli_close($conn);
 
 
                             <!-- upload popup -->
-                            <div class="modal fade" id="uploadVid" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.307);">
+                            <div class="modal fade" id="uploadVid" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style="z-index: 1; background-color: rgba(255, 255, 255, 0.307);">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content" style="background-color: rgb(56, 56, 56);">
                                         <div class="modal-header">
@@ -124,7 +130,7 @@ mysqli_close($conn);
                                                         </div>
                                                         <div class="col-6">
                                                             <div class="row" style=" padding: 5px;">
-                                                                <input type="text" class="form-control rounded-pill" placeholder="title" name="V_name" style="height: 30px;">
+                                                                <input type="text" class="form-control rounded-pill" placeholder="title" name="V_title" style="height: 30px;">
                                                             </div>
                                                             <div class="row" style=" padding: 5px;">
                                                                 <textarea type="text" class="form-control rounded-3" placeholder="decsription" name="V_decs" style="height: 120px; resize: none;"></textarea>

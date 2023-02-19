@@ -1,10 +1,11 @@
 <style>
     .limit-text {
-        max-height: 2.4em;
+        max-height: 2.5em;
+        height: 5em;
         overflow: hidden;
-        /* white-space: nowrap; */
+        white-space: normal;
         text-overflow: ellipsis;
-        font-size: large;
+        font-size: medium;
     }
 
     .no-line {
@@ -17,8 +18,24 @@
 
     }
 
-    
-    
+    .video-card {
+        background-color: darkgray;
+        border-radius: 15px;
+        height: 200px;
+        font-size: large;
+    }
+
+    .col-card {
+        padding: 20px; 
+        padding-bottom: 0px;
+        transition: 0.5s;
+    }
+
+    .col-card:hover {
+        padding: 15px; 
+        padding-bottom: 0px;
+        transition: 0.5s;
+    }
 
 </style>
 
@@ -41,14 +58,32 @@ function sh_vid()
                 $result2 = mysqli_query($conn, $sql2);
                 $UserName = $result2->fetch_assoc();
             ?>
-                <div class="col-3" style="padding: 5px;">
-                    <a href="watch.php?Vid=<?php echo '' . $Link ?>" class="no-line">
-                    <div class="card" style="background-color: darkgray;">
-                    <div class="card-title limit-text"><?php echo '' . $row['V_title']; ?></div>
-                    <div class="card-subtitle sub-text"><?php echo '' . $row['V_length']; ?></div>
-                    <div class="card-subtitle sub-text"><?php echo '' . $UserName['U_name']; ?></div>
+                <div class="col-3" style="padding: 20px; padding-bottom: 0px;">
+
+
+                    <div class="row video-card">
+                        <!-- <img src="pic\bg.jpg" alt="bg"> -->
+                        <a href="watch.php?Vid=<?php echo '' . $Link ?>" class="no-line">
+                            <div class="col">
+                                <div class="row" style="background-image: url(pic/bg.jpg); height: 130px; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                </div>
+                                <!-- <div class="row" style="max-height: 6em;">
+                                    <img src="pic\bg.jpg" alt="bg">
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-9 limit-text"><?php echo '' . $row['V_title']; ?></div>
+                                    <div class="col-3"><?php echo '' . $row['V_length']; ?></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <?php echo '' . $UserName['U_name']; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                    </a>
+
+
                 </div>
             <?php
                 echo '<br>';
@@ -56,7 +91,7 @@ function sh_vid()
             ?>
         </div>
     </div>
-    <?php
+<?php
     mysqli_close($conn);
 }
 
@@ -77,14 +112,32 @@ function sh_user_vid($U_id)
                 $result2 = mysqli_query($conn, $sql2);
                 $UserName = $result2->fetch_assoc();
             ?>
-                <div class="col-3" style="padding: 5px;">
-                    <a href="watch.php?Vid=<?php echo '' . $Link ?>" class="no-line">
-                    <div class="card" style="background-color: darkgray;">
-                    <div class="card-title limit-text"><?php echo '' . $row['V_title']; ?></div>
-                    <div class="card-subtitle sub-text"><?php echo '' . $row['V_length']; ?></div>
-                    <div class="card-subtitle sub-text"><?php echo '' . $UserName['U_name']; ?></div>
+                <div class="col-3" style="padding: 20px; padding-bottom: 0px;">
+
+
+                    <div class="row video-card">
+                        <!-- <img src="pic\bg.jpg" alt="bg"> -->
+                        <a href="watch.php?Vid=<?php echo '' . $Link ?>" class="no-line">
+                            <div class="col">
+                                <div class="row" style="background-image: url(pic/bg.jpg); height: 130px; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                </div>
+                                <!-- <div class="row" style="max-height: 6em;">
+                                    <img src="pic\bg.jpg" alt="bg">
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-9 limit-text"><?php echo '' . $row['V_title']; ?></div>
+                                    <div class="col-3"><?php echo '' . $row['V_length']; ?></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <?php echo '' . $UserName['U_name']; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                    </a>
+
+
                 </div>
             <?php
                 echo '<br>';
@@ -92,8 +145,14 @@ function sh_user_vid($U_id)
             ?>
         </div>
     </div>
-    <?php
+<?php
     mysqli_close($conn);
+}
+
+function test_text($in_text)
+{
+    echo 'this is input text' . $in_text;
+    echo '<br>this is test text';
 }
 
 ?>

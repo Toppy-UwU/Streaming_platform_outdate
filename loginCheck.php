@@ -29,6 +29,7 @@
     $_SESSION['U_ID'] = $data['U_ID'];
     $_SESSION['U_name'] = $data['U_name'];
     $_SESSION['type'] = $data['U_type'];
+    $_SESSION['upload_permit'] = $data['U_permit'];
     log_in_out('login', $conn);
     header("Location: home.php");
   } else {
