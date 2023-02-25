@@ -8,8 +8,12 @@ $sql = "SELECT * FROM videos WHERE V_encode = '$V_name'";
 $result = mysqli_query($conn, $sql);
 $data = $result->fetch_assoc();
 $V_ID = $data['V_ID'];
-$add_history = "INSERT INTO histories (U_ID, V_ID) VALUES ($U_ID, $V_ID)";
-mysqli_query($conn, $add_history);
+$V_permit = $data['V_permit'];
+$owner = $data['U_ID'];
+if($_SESSION['logged_in']){
+  $add_history = "INSERT INTO histories (U_ID, V_ID) VALUES ($U_ID, $V_ID)";
+  mysqli_query($conn, $add_history);
+}
 mysqli_close($conn);
 
 ?>
@@ -125,19 +129,38 @@ mysqli_close($conn);
     <div class="container-fluid" style="margin-left: 250px; background-color: rgb(56, 56, 56);">
       <!-- content -->
 
-      <div class="video-container test-bg">
-        <video id="video" controls></video>
-        <select id="quality-select" class="quality-select">
-          <option value="auto" selected>Auto</option>
-          <option value="240">240p</option>
-          <option value="360">360p</option>
-          <option value="480">480p</option>
-          <option value="720">720p</option>
-          <option value="1080">1080p</option>
-        </select>
+      <?php if ($V_permit == 'private' and $owner == $U_ID) { ?>
+        <div class="video-container test-bg">
+          <video id="video" controls></video>
+          <select id="quality-select" class="quality-select">
+            <option value="auto" selected>Auto</option>
+            <option value="240">240p</option>
+            <option value="360">360p</option>
+            <option value="480">480p</option>
+            <option value="720">720p</option>
+            <option value="1080">1080p</option>
+          </select>
 
-      </div>
-      <h1> <?php echo '' . $data['V_title'] ?> </h1>
+        </div>
+        <h1> <?php echo '' . $data['V_title'] ?> </h1>
+      <?php }
+      if ($V_permit != 'private') { ?>
+        <div class="video-container test-bg">
+          <video id="video" controls></video>
+          <select id="quality-select" class="quality-select">
+            <option value="auto" selected>Auto</option>
+            <option value="240">240p</option>
+            <option value="360">360p</option>
+            <option value="480">480p</option>
+            <option value="720">720p</option>
+            <option value="1080">1080p</option>
+          </select>
+
+        </div>
+        <h1> <?php echo '' . $data['V_title'] ?> </h1>
+      <?php } else {
+        echo 'this video is private';
+      } ?>
       <?php sh_vid() ?>
       <script src="//cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
@@ -161,7 +184,7 @@ mysqli_close($conn);
           });
         });
 
-        var time = localStorage.getItem('video-time');
+        var time = localStorage.getItem('video-time-' + <?php echo '' . $data['V_ID'] ?>);
         if (time) {
           video.currentTime = time;
         }

@@ -139,23 +139,41 @@ mysqli_close($conn);
                                         </div>
                                         <form action="upload.php" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
-                                                <div class="container">
+                                                <div class="container-fluid">
                                                     <div class="row">
-                                                        <div class="col-6 rounded-4" style="background-color: rgb(255, 255, 255); height: 170px; padding: 5px;">
+                                                        <div class="col-7 rounded">
                                                             <div class="custom-file">
-                                                                <input type="file" id="selectVid" class="form-control-file" name="video" accept="video/*" style="height: 170px; opacity: 0;">
-                                                                <!-- <label class="custom-file-label" for="selectVid">Select File</label> -->
+                                                                <input type="file" id="selectVid" class="form-control-file" name="video" accept="video/*">
+                                                                <label class="custom-file-label" for="selectVid">Select File</label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="row" style=" padding: 5px;">
-                                                                <input type="text" class="form-control rounded-pill" placeholder="title" name="V_title" style="height: 30px;">
-                                                            </div>
-                                                            <div class="row" style=" padding: 5px;">
-                                                                <textarea type="text" class="form-control rounded-3" placeholder="decsription" name="V_decs" style="height: 120px; resize: none;"></textarea>
-                                                            </div>
+                                                        <div class="col-5">
+                                                            <label for="U_type"> <h6>Video permission</h6> </label>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="V_permit" id="permit_public" value="public" checked>
+                                                                    <label class="form-check-label" for="permit_public">
+                                                                        Public
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="V_permit" id="permit_private" value="private">
+                                                                    <label class="form-check-label" for="permit_private">
+                                                                        Private
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="V_permit" id="permit_unlist" value="unlisted">
+                                                                    <label class="form-check-label" for="permit_unlist">
+                                                                        unlisted
+                                                                    </label>
+                                                                </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row" style=" padding: 5px;">
+                                                        <input type="text" class="form-control rounded-pill" placeholder="title" name="V_title" style="height: 30px;">
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

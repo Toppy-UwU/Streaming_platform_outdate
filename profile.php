@@ -80,15 +80,15 @@ mysqli_close($conn);
                                 <a href="historyPage.php" style="margin-top: 20px;">
                                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">History</button>
                                 </a>
-                                
+
                                 <?php
-                                    if($_SESSION['upload_permit'] == '1' ) {
+                                if ($_SESSION['upload_permit'] == '1') {
                                 ?>
                                     <div style="margin-top: 20px;">
-                                    <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#uploadVid" style="width: 230px; color: black;">Upload Video</button>
+                                        <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#uploadVid" style="width: 230px; color: black;">Upload Video</button>
                                     </div>
                                 <?php
-                                    }
+                                }
                                 ?>
 
                                 <?php
@@ -105,20 +105,19 @@ mysqli_close($conn);
                                     <button class="btn btn-danger rounded-pill" style="width: 230px; color: black;">Logout</button>
                                 </a>
                             <?php
-                            }
-                            else {
-                                ?>
+                            } else {
+                            ?>
                                 <a href="login.php" style="margin-top: 20px;">
                                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Login</button>
                                 </a>
-                                <?php
+                            <?php
                             }
                             ?>
 
 
 
                             <!-- upload popup -->
-                            <div class="modal fade" id="uploadVid" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style="z-index: 1; background-color: rgba(255, 255, 255, 0.307);">
+                            <div class="modal fade" id="uploadVid" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style=" background-color: rgba(255, 255, 255, 0.307);">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content" style="background-color: rgb(56, 56, 56);">
                                         <div class="modal-header">
@@ -129,23 +128,43 @@ mysqli_close($conn);
                                         </div>
                                         <form action="upload.php" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
-                                                <div class="container">
+                                                <div class="container-fluid">
                                                     <div class="row">
-                                                        <div class="col-6 rounded-4" style="background-color: rgb(255, 255, 255); height: 170px; padding: 5px;">
+                                                        <div class="col-7 rounded">
                                                             <div class="custom-file">
-                                                                <input type="file" id="selectVid" class="form-control-file" name="video" accept="video/*" style="height: 170px; opacity: 0;">
-                                                                <!-- <label class="custom-file-label" for="selectVid">Select File</label> -->
+                                                                <input type="file" id="selectVid" class="form-control-file" name="video" accept="video/*">
+                                                                <label class="custom-file-label" for="selectVid">Select File</label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="row" style=" padding: 5px;">
-                                                                <input type="text" class="form-control rounded-pill" placeholder="title" name="V_title" style="height: 30px;">
+                                                        <div class="col-5">
+                                                            <label for="U_type">
+                                                                <h6>Video permission</h6>
+                                                            </label>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="V_permit" id="permit_public" value="public" checked>
+                                                                <label class="form-check-label" for="permit_public">
+                                                                    Public
+                                                                </label>
                                                             </div>
-                                                            <div class="row" style=" padding: 5px;">
-                                                                <textarea type="text" class="form-control rounded-3" placeholder="decsription" name="V_decs" style="height: 120px; resize: none;"></textarea>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="V_permit" id="permit_private" value="private">
+                                                                <label class="form-check-label" for="permit_private">
+                                                                    Private
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="V_permit" id="permit_unlist" value="unlisted">
+                                                                <label class="form-check-label" for="permit_unlist">
+                                                                    unlisted
+                                                                </label>
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row" style=" padding: 5px;">
+                                                        <input type="text" class="form-control rounded-pill" placeholder="title" name="V_title" style="height: 30px;">
+                                                    </div>
+
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -165,7 +184,7 @@ mysqli_close($conn);
             </div>
         </div>
         <div class="container-fluid" style="margin-left: 250px; background-color: rgb(56, 56, 56);">
-            <div class="row" style="background-color: green;">
+            <div class="row" >
                 <div class="row-cols-auto" style="background-image: url(pic/profile\ bg.jpg); height: fit-content;">
                     <!-- <h1>This is user profile page</h1> -->
                     <div class="row align-items-center" style="background-color: rgba(255, 255, 255, 0.4);">
@@ -202,79 +221,131 @@ mysqli_close($conn);
                         </div>
 
                         <?php
-                        if($ID == $_SESSION['U_ID']) {
-                            ?>
-                                <div class="col-2">
-                            <div class="row " style="height: fit-content;">
-                                <div class="col">
-                                    <div class="div-center">
-                                        <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#editProfile">
-                                            edit profile
-                                        </button>
+                        if ($ID == $_SESSION['U_ID']) {
+                        ?>
+                            <div class="col-2">
+                                <div class="row " style="height: fit-content;">
+                                    <div class="col">
+                                        <div class="div-center">
+                                            <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#editProfile">
+                                                edit profile
+                                            </button>
 
-                                        <!-- edit profile popup -->
+                                            <!-- edit profile popup -->
 
-                                        <div class="modal fade" id="editProfile" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.307);">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content" style="background-color: rgb(56, 56, 56);">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="uploadVidTitle" style="color: white;">Edit Profile</h5>
-                                                        
+                                            <div class="modal fade" id="editProfile" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style="background-color: rgba(255, 255, 255, 0.307);">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content" style="background-color: rgb(56, 56, 56);">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="uploadVidTitle" style="color: white;">Edit Profile</h5>
+
+                                                        </div>
+                                                        <form action="update.php" method="post" enctype="multipart/form-data">
+                                                            <div class="modal-body">
+                                                                <!-- content -->
+                                                                <div style="margin-bottom: 10px;">
+                                                                    <input type="text" class="form-control" id="edit_name" name="U_name" value="<?php echo $data['U_name'] ?>">
+                                                                </div>
+                                                                <div style="margin-bottom: 10px;">
+                                                                    <input type="text" class="form-control" id="edit_mail" name="U_mail" value="<?php echo $data['U_mail'] ?>">
+                                                                </div>
+                                                                <div>
+                                                                    <input type="text" class="form-control" id="edit_pass" name="U_pass" value="<?php echo $data['U_pass'] ?>">
+                                                                </div>
+                                                                <input type="hidden" name="method" value="user-update">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger rounded-pill" data-dismiss="modal">Cancle</button>
+                                                                <button type="submit" class="btn btn-primary rounded-pill">Save</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <form action="update.php" method="post" enctype="multipart/form-data">
-                                                        <div class="modal-body">
-                                                            <!-- content -->
-                                                            <div style="margin-bottom: 10px;">
-                                                            <input type="text" class="form-control" id="edit_name" name="U_name" value="<?php echo $data['U_name']?>">
-                                                            </div>
-                                                            <div style="margin-bottom: 10px;">
-                                                            <input type="text" class="form-control" id="edit_mail" name="U_mail" value="<?php echo $data['U_mail']?>">                                                    
-                                                            </div>
-                                                            <div>
-                                                            <input type="text" class="form-control" id="edit_pass" name="U_pass" value="<?php echo $data['U_pass']?>">
-                                                            </div>
-                                                            <input type="hidden" name="method" value="user-update">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger rounded-pill" data-dismiss="modal">Cancle</button>
-                                                            <button type="submit" class="btn btn-primary rounded-pill">Save</button>
-                                                        </div>
-                                                    </form>
                                                 </div>
                                             </div>
+
+                                            <!-- end of popup -->
+
                                         </div>
-
-                                        <!-- end of popup -->
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                            <?php
+                        <?php
                         }
                         ?>
 
                     </div>
                 </div>
-                <div class="row-cols-auto" style="background-color: blue; height: fit-content;">
-                <!-- user content -->
-                    <h1>content</h1>
-                    <h3>
-                        <?php
-                        echo "<br>" . $data['U_mail'];
-                        echo "<br>" . $data['U_ID'];
-                        echo "<br>" . $data['U_name'];
-                        echo "<br>" . $data['U_pass'];
-                        echo "<br>" . $data['U_type'];
-                        echo "<br>" . $data['U_vid'];
-                        echo "<br>" . $data['created_at'];
+                <div class="row-cols-auto" style=" height: fit-content;">
+                    <!-- user content -->
 
-                        echo "<br>";
-                        echo "Video List <br>";
-                        sh_user_vid($ID);
+                    <div class="container mt-3">
+                        <div class="text-left mt-3">
+                            <button id="btn1" class="btn btn-light " onclick="showPanel('pnl1')">Public Video</button>
+                            <?php if($ID == $_SESSION['U_ID']) { ?>
+                                <button id="btn2" class="btn btn-light " onclick="showPanel('pnl2')">Private Video</button>
+                                <button id="btn3" class="btn btn-light " onclick="showPanel('pnl3')">Unlisted Video</button>
+                                <button id="btn4" class="btn btn-light " onclick="showPanel('pnl4')">User Log</button>
+                            <?php } ?>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="pnl1">
+                                    <h3>
+                                    <?php 
+                                        sh_user_vid($ID);
+                                    ?>
+                                    </h3>
+                                </div>
 
-                        ?>
-                    </h3>
+                                <div id="pnl2" class="d-none">
+                                    <h3>
+                                    <?php 
+                                        sh_user_private($ID);
+                                    ?>
+                                    </h3>
+                                </div>
+
+                                <div id="pnl3" class="d-none">
+                                    <h3>
+                                    <?php 
+                                        sh_user_unlisted($ID);
+                                    ?>
+                                    </h3>
+                                </div>
+
+                                <div id="pnl4" class="card d-none">
+                                    <div class="card-header">
+                                        User Log Data
+                                    </div>
+                                    <div class="card-body">
+                                        <?php
+                                        include 'log.php';
+                                        include 'conn.php';
+                                        showUserLog($conn);
+                                        ?>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Include Bootstrap JS and jQuery -->
+                    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+                    <script>
+                        // Function to show selected panel
+                        function showPanel(pnlId) {
+                            // Hide both panels
+                            $('#pnl1, #pnl2, #pnl3, #pnl4').addClass('d-none');
+                            // Show the selected panel
+                            $('#' + pnlId).removeClass('d-none');
+                        }
+                    </script>
+
                     <!-- emd of user content -->
                 </div>
             </div>

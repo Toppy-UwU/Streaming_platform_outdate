@@ -163,7 +163,10 @@ mysqli_close($conn);
                                 server resource
                             </div>
                             <div class="card-body">
-                                server resource
+                                <?php
+                                    include 'serverMonitor.php';
+                                    get_server_resource();
+                                ?>
                             </div>
                         </div>
                         
@@ -186,6 +189,7 @@ mysqli_close($conn);
                 }
             </script>
         </div>
+    
     </div>
 
 

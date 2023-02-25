@@ -10,6 +10,7 @@
 
     $U_ID = $_SESSION['U_ID'];
     $title = $_POST['V_title'];
+    $V_permit = $_POST['V_permit'];
     if($title != ' ' || $title != '') {
         $name = $title;
     }else {
@@ -36,7 +37,7 @@
     $file_new_name = implode('_', $tmp_ext) . '.' . end($file_ext);
 
     $sql = "INSERT INTO videos (V_title, V_view, V_length, V_size, U_ID, V_permit, V_encode)
-    VALUES ('$name', 0, '$duration', '$size', '$U_ID', 'public', '$encode_name')";
+    VALUES ('$name', 0, '$duration', '$size', '$U_ID', '$V_permit', '$encode_name')";
 
     $update_user_video = "UPDATE users SET U_vid = U_vid + 1 WHERE U_ID = $U_ID";
     // echo "" . $file_name;
