@@ -3,9 +3,13 @@ session_start();
 include 'conn.php';
 include 'showVid.php';
 $V_name = $_GET['Vid'];
+$U_ID = $_SESSION['U_ID'];
 $sql = "SELECT * FROM videos WHERE V_encode = '$V_name'";
 $result = mysqli_query($conn, $sql);
 $data = $result->fetch_assoc();
+$V_ID = $data['V_ID'];
+$add_history = "INSERT INTO histories (U_ID, V_ID) VALUES ($U_ID, $V_ID)";
+mysqli_query($conn, $add_history);
 mysqli_close($conn);
 
 ?>
@@ -78,14 +82,14 @@ mysqli_close($conn);
                 <a href="profile.php?profile=<?php echo $_SESSION['U_ID'] ?>" style="margin-top: 20px;">
                   <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Profile</button>
                 </a>
-                <a href="video.html" style="margin-top: 20px;">
-                  <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Private</button>
+                <a href="historyPage.php" style="margin-top: 20px;">
+                  <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">History</button>
                 </a>
 
                 <?php
                 if ($_SESSION['type'] == 'admin') {
                 ?>
-                  <a href="index.html" style="margin-top: 20px;">
+                  <a href="adminPage.php" style="margin-top: 20px;">
                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Administration</button>
                   </a>
                 <?php
@@ -131,7 +135,7 @@ mysqli_close($conn);
           <option value="720">720p</option>
           <option value="1080">1080p</option>
         </select>
-        
+
       </div>
       <h1> <?php echo '' . $data['V_title'] ?> </h1>
       <?php sh_vid() ?>
@@ -161,8 +165,17 @@ mysqli_close($conn);
         if (time) {
           video.currentTime = time;
         }
+
         video.addEventListener('timeupdate', function() {
-          localStorage.setItem('video-time', video.currentTime);
+          localStorage.setItem('video-time-' + <?php echo '' . $data['V_ID'] ?>, video.currentTime);
+        });
+
+        // Set the video's current time to the stored value when the video starts playing
+        video.addEventListener('play', function() {
+          var time = localStorage.getItem('video-time-' + <?php echo '' . $data['V_ID'] ?>);
+          if (time) {
+            video.currentTime = time;
+          }
         });
       </script>
 

@@ -6,7 +6,7 @@ session_start();
 //     header("Location: login.php");
 // }
 include 'conn.php';
-include 'showVid.php';
+include 'showHistory.php';
 $ID = $_SESSION['U_ID'];
 $sql = "SELECT * FROM users WHERE U_ID = '$ID'";
 $result = mysqli_query($conn, $sql);
@@ -32,6 +32,7 @@ mysqli_close($conn);
             justify-content: center;
             align-items: center;
         }
+
     </style>
 
 </head>
@@ -89,6 +90,16 @@ mysqli_close($conn);
                                 <a href="historyPage.php" style="margin-top: 20px;">
                                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">History</button>
                                 </a>
+                                
+                                <?php
+                                    if($_SESSION['upload_permit'] == '1' ) {
+                                ?>
+                                    <div style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" data-toggle="modal" data-target="#uploadVid" style="width: 230px; color: black;">Upload Video</button>
+                                    </div>
+                                <?php
+                                    }
+                                ?>
 
                                 <?php
                                 if ($_SESSION['type'] == 'admin') {
@@ -104,14 +115,59 @@ mysqli_close($conn);
                                     <button class="btn btn-danger rounded-pill" style="width: 230px; color: black;">Logout</button>
                                 </a>
                             <?php
-                            } else {
-                            ?>
+                            }
+                            else {
+                                ?>
                                 <a href="login.php" style="margin-top: 20px;">
                                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Login</button>
                                 </a>
-                            <?php
+                                <?php
                             }
                             ?>
+
+
+
+                            <!-- upload popup -->
+                            <div class="modal fade" id="uploadVid" tabindex="-1" role="application" data-backdrop="false" aria-hidden="true" style=" background-color: rgba(255, 255, 255, 0.307);">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content" style="background-color: rgb(56, 56, 56);">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="uploadVidTitle" style="color: white;">Upload Video</h5>
+                                            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button> -->
+                                        </div>
+                                        <form action="upload.php" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-6 rounded-4" style="background-color: rgb(255, 255, 255); height: 170px; padding: 5px;">
+                                                            <div class="custom-file">
+                                                                <input type="file" id="selectVid" class="form-control-file" name="video" accept="video/*" style="height: 170px; opacity: 0;">
+                                                                <!-- <label class="custom-file-label" for="selectVid">Select File</label> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="row" style=" padding: 5px;">
+                                                                <input type="text" class="form-control rounded-pill" placeholder="title" name="V_title" style="height: 30px;">
+                                                            </div>
+                                                            <div class="row" style=" padding: 5px;">
+                                                                <textarea type="text" class="form-control rounded-3" placeholder="decsription" name="V_decs" style="height: 120px; resize: none;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger rounded-pill" data-dismiss="modal">Cancle</button>
+                                                <button type="submit" class="btn btn-primary rounded-pill">Upload</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
 
                         </nav>
                     </div>
@@ -125,66 +181,15 @@ mysqli_close($conn);
         <!-- end of side bar -->
 
         <div class="container-fluid" style="margin-left: 250px; background-color: rgb(56, 56, 56);">
-            <div class="container mt-3">
-                <div class="text-left mt-3">
-                    <button id="btn1" class="btn btn-light " onclick="showPanel('pnl1')">User List</button>
-                    <button id="btn2" class="btn btn-light " onclick="showPanel('pnl2')">Log</button>
-                    <button id="btn3" class="btn btn-light " onclick="showPanel('pnl3')">Server resource</button>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="pnl1" class="card">
-                            <div class="card-header">
-                                User List
-                            </div>
-                            <div class="card-body">
-                                <?php
-                                include 'userList.php';
-                                ?>
-                            </div>
-                        </div>
-
-                        <div id="pnl2" class="card d-none">
-                            <div class="card-header">
-                                Log Data
-                            </div>
-                            <div class="card-body">
-                                <?php
-                                include 'log.php';
-                                include 'conn.php';
-                                showLog($conn);
-                                ?>
-                            </div>
-                        </div>
-
-                        <div id="pnl3" class="card d-none">
-                            <div class="card-header">
-                                server resource
-                            </div>
-                            <div class="card-body">
-                                server resource
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
+            <div class="row">
+                <!-- <h1>Video will show here</h1> -->
+                <h2>History
+                    <?php
+                        sh_user_histories($ID);
+                    ?>
+                </h2>
 
             </div>
-
-            <!-- Include Bootstrap JS and jQuery -->
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-            <script>
-                // Function to show selected panel
-                function showPanel(pnlId) {
-                    // Hide both panels
-                    $('#pnl1, #pnl2, #pnl3').addClass('d-none');
-                    // Show the selected panel
-                    $('#' + pnlId).removeClass('d-none');
-                }
-            </script>
         </div>
     </div>
 

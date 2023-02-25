@@ -87,8 +87,8 @@ mysqli_close($conn);
                                 <a href="profile.php?profile=<?php echo $_SESSION['U_ID'] ?>" style="margin-top: 20px;">
                                     <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Profile</button>
                                 </a>
-                                <a href="video.html" style="margin-top: 20px;">
-                                    <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Private</button>
+                                <a href="historyPage.php" style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">History</button>
                                 </a>
                                 
                                 <?php
@@ -104,7 +104,7 @@ mysqli_close($conn);
                                 <?php
                                 if ($_SESSION['type'] == 'admin') {
                                 ?>
-                                    <a href="index.html" style="margin-top: 20px;">
+                                    <a href="adminPage.php" style="margin-top: 20px;">
                                         <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Administration</button>
                                     </a>
                                 <?php
@@ -182,12 +182,11 @@ mysqli_close($conn);
 
         <div class="container-fluid" style="margin-left: 250px; background-color: rgb(56, 56, 56);">
             <div class="row">
-                <h1>Video will show here</h1>
+                <!-- <h1>Video will show here</h1> -->
                 <h2>welcome back
                     <?php
                     echo $data['U_name'];
                     sh_vid();
-                    test_text('hello');
                     ?>
                 </h2>
 

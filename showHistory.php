@@ -17,7 +17,7 @@ function sh_all_histories() {
 function sh_user_histories($ID) {
     include 'conn.php';
     session_start();
-    $sql = "SELECT * FROM histories WHERE U_ID = '$ID'";
+    $sql = "SELECT * FROM histories WHERE U_ID = '$ID' ORDER BY H_watchData DESC";
     $result = mysqli_query($conn, $sql);
     while ($row = $result->fetch_assoc()) {
         echo '<br>ID:' . $row['H_ID'];

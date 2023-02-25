@@ -2,11 +2,6 @@
 <html lang="en">
 <?php
 session_start();
-
-if (!$_SESSION['logged_in']) {
-    header("Location: login.php");
-}
-
 include 'conn.php';
 include 'showVid.php';
 $ID = $_GET['profile'];
@@ -73,16 +68,20 @@ mysqli_close($conn);
                 <div class="container-fluid vh-100 flex-column">
                     <div class="row-cols-1 " style=" align-items: center;">
                         <nav class="nav">
-                            <a href="home.php" style="margin-top: 20px;">
-                                <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Home</button>
-                            </a>
-                            <a href="profile.php?profile=<?php echo $_SESSION['U_ID'] ?>" style="margin-top: 20px;">
-                                <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Profile</button>
-                            </a>
-                            <a href="video.html" style="margin-top: 20px;">
-                                <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Private</button>
-                            </a>
                             <?php
+                            if ($_SESSION['logged_in']) {
+                            ?>
+                                <a href="home.php" style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Home</button>
+                                </a>
+                                <a href="profile.php?profile=<?php echo $_SESSION['U_ID'] ?>" style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Profile</button>
+                                </a>
+                                <a href="historyPage.php" style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">History</button>
+                                </a>
+                                
+                                <?php
                                     if($_SESSION['upload_permit'] == '1' ) {
                                 ?>
                                     <div style="margin-top: 20px;">
@@ -92,19 +91,29 @@ mysqli_close($conn);
                                     }
                                 ?>
 
-                            <?php
-                            if($_SESSION['type'] == 'admin') {
+                                <?php
+                                if ($_SESSION['type'] == 'admin') {
                                 ?>
-                                <a href="index.html" style="margin-top: 20px;">
-                                <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Administration</button>
+                                    <a href="adminPage.php" style="margin-top: 20px;">
+                                        <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Administration</button>
+                                    </a>
+                                <?php
+                                }
+                                ?>
+
+                                <a href="logout.php" style="margin-top: 20px;">
+                                    <button class="btn btn-danger rounded-pill" style="width: 230px; color: black;">Logout</button>
+                                </a>
+                            <?php
+                            }
+                            else {
+                                ?>
+                                <a href="login.php" style="margin-top: 20px;">
+                                    <button class="btn btn-light rounded-pill" style="width: 230px; color: black;">Login</button>
                                 </a>
                                 <?php
                             }
                             ?>
-
-                            <a href="logout.php" style="margin-top: 20px;">
-                                <button class="btn btn-danger rounded-pill" style="width: 230px; color: black;">Logout</button>
-                            </a>
 
 
 
@@ -210,22 +219,21 @@ mysqli_close($conn);
                                                 <div class="modal-content" style="background-color: rgb(56, 56, 56);">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="uploadVidTitle" style="color: white;">Edit Profile</h5>
-                                                        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button> -->
+                                                        
                                                     </div>
-                                                    <form action="" method="post" enctype="multipart/form-data">
+                                                    <form action="update.php" method="post" enctype="multipart/form-data">
                                                         <div class="modal-body">
                                                             <!-- content -->
                                                             <div style="margin-bottom: 10px;">
-                                                            <input type="text" class="form-control" id="edit_name" value="<?php echo $data['U_name']?>">
+                                                            <input type="text" class="form-control" id="edit_name" name="U_name" value="<?php echo $data['U_name']?>">
                                                             </div>
                                                             <div style="margin-bottom: 10px;">
-                                                            <input type="text" class="form-control" id="edit_mail" value="<?php echo $data['U_mail']?>">                                                    
+                                                            <input type="text" class="form-control" id="edit_mail" name="U_mail" value="<?php echo $data['U_mail']?>">                                                    
                                                             </div>
                                                             <div>
-                                                            <input type="text" class="form-control" id="edit_pass" value="<?php echo $data['U_pass']?>">
+                                                            <input type="text" class="form-control" id="edit_pass" name="U_pass" value="<?php echo $data['U_pass']?>">
                                                             </div>
+                                                            <input type="hidden" name="method" value="user-update">
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-danger rounded-pill" data-dismiss="modal">Cancle</button>
@@ -236,7 +244,7 @@ mysqli_close($conn);
                                             </div>
                                         </div>
 
-
+                                        <!-- end of popup -->
 
                                     </div>
                                 </div>
