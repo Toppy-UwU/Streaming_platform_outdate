@@ -10,11 +10,12 @@ $data = $result->fetch_assoc();
 $V_ID = $data['V_ID'];
 $V_permit = $data['V_permit'];
 $owner = $data['U_ID'];
-if($_SESSION['logged_in']){
-  $add_history = "INSERT INTO histories (U_ID, V_ID) VALUES ($U_ID, $V_ID)";
+if ($_SESSION['logged_in']) {
+  $add_history = "INSERT INTO histories (U_ID, V_ID, H_watchtime) VALUES ($U_ID, $V_ID, 0)";
   mysqli_query($conn, $add_history);
 }
 mysqli_close($conn);
+
 
 ?>
 
@@ -158,6 +159,8 @@ mysqli_close($conn);
 
         </div>
         <h1> <?php echo '' . $data['V_title'] ?> </h1>
+        
+
       <?php } else {
         echo 'this video is private';
       } ?>
@@ -184,21 +187,40 @@ mysqli_close($conn);
           });
         });
 
-        var time = localStorage.getItem('video-time-' + <?php echo '' . $data['V_ID'] ?>);
+        // var time = localStorage.getItem('video-time-' + );
+        
+        var time = <?php echo '' . continue_time( $U_ID, $V_ID) ?>;
         if (time) {
           video.currentTime = time;
         }
 
-        video.addEventListener('timeupdate', function() {
-          localStorage.setItem('video-time-' + <?php echo '' . $data['V_ID'] ?>, video.currentTime);
-        });
+        // video.addEventListener('timeupdate', function() {
+        //   localStorage.setItem('video-time', video.currentTime);
+        // });
 
         // Set the video's current time to the stored value when the video starts playing
         video.addEventListener('play', function() {
-          var time = localStorage.getItem('video-time-' + <?php echo '' . $data['V_ID'] ?>);
+          var time = 0
           if (time) {
             video.currentTime = time;
           }
+        });
+
+
+        window.addEventListener('beforeunload', function() {
+          var time = video.currentTime;
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'update.php', true);
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+              console.log(xhr.responseText); // Log the response from the server
+            }
+          }; 
+          xhr.send('time=' + time + 
+                   '&U_ID=' + <?php echo '' . $U_ID ?> + 
+                   '&V_ID=' + <?php echo '' . $V_ID ?> + 
+                   '&method=video-update-time');
         });
       </script>
 

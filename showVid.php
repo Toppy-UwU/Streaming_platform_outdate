@@ -257,6 +257,24 @@ function sh_user_unlisted($U_id)
     mysqli_close($conn);
 }
 
+function continue_time($U_ID, $V_ID) {
+    include 'conn.php';
+    $get_continue = "SELECT H_watchtime 
+                    FROM histories 
+                    WHERE U_ID = '$U_ID' 
+                    and V_ID = '$V_ID' 
+                    ORDER BY H_watchData 
+                    DESC LIMIT 1 OFFSET 1";
+    $pre_time = mysqli_query($conn, $get_continue)->fetch_row();
+    if($pre_time) {
+        return $pre_time[0];
+    }else {
+        return 0;
+    }
+    mysqli_close($conn);
+    
+}
+
 function test_text($in_text)
 {
     echo 'this is input text' . $in_text;

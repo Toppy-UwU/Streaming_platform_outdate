@@ -35,6 +35,15 @@
 
     }
 
+    if ($method == 'video-update-time') {
+        $U_ID = $_POST['U_ID'];
+        $V_ID = $_POST['V_ID'];
+        $time = $_POST['time'];
+
+        $update_time = "UPDATE histories SET H_watchtime = '$time' WHERE U_ID = '$U_ID' AND V_ID = '$V_ID' ORDER BY H_watchData DESC limit 1";
+        mysqli_query($conn, $update_time);
+    }
+
     else {
         header("Location: home.php");
         exit;
